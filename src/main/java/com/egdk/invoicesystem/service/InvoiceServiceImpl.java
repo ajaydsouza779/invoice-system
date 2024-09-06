@@ -38,7 +38,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void processPayment(Long id, BigDecimal paymentAmount) {
 
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new RuntimeException("Invoice not found"));
+        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException(id));
         invoice.setPaidAmount(invoice.getPaidAmount().add(paymentAmount));
         if (invoice.getPaidAmount().compareTo(invoice.getAmount()) >= 0) {
             invoice.setStatus("paid");
