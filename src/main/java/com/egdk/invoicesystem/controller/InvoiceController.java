@@ -1,12 +1,12 @@
 package com.egdk.invoicesystem.controller;
 
 import com.egdk.invoicesystem.exception.InvalidPaymentAmountException;
-import com.egdk.invoicesystem.exception.InvoiceNotFoundException;
 import com.egdk.invoicesystem.model.dto.InvoiceRequest;
 import com.egdk.invoicesystem.model.dto.OverdueRequest;
 import com.egdk.invoicesystem.model.dto.PaymentRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
 import com.egdk.invoicesystem.service.InvoiceService;
+import com.egdk.invoicesystem.service.InvoiceServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
