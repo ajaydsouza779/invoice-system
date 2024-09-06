@@ -1,5 +1,6 @@
 package com.egdk.invoicesystem.service;
 
+import com.egdk.invoicesystem.exception.InvoiceNotFoundException;
 import com.egdk.invoicesystem.model.entity.Invoice;
 import com.egdk.invoicesystem.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,18 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InvoiceService {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    public Invoice getInvoiceById(Long id) {
+        return invoiceRepository.findById(id)
+                .orElseThrow(() -> new InvoiceNotFoundException(id));
+    }
 
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
@@ -27,6 +34,7 @@ public class InvoiceService {
     }
 
     public void processPayment(Long id, BigDecimal paymentAmount) {
+
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new RuntimeException("Invoice not found"));
         invoice.setPaidAmount(invoice.getPaidAmount().add(paymentAmount));
         if (invoice.getPaidAmount().compareTo(invoice.getAmount()) >= 0) {
@@ -57,4 +65,6 @@ public class InvoiceService {
             }
         }
     }
+
+
 }
