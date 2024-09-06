@@ -8,17 +8,21 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-    # Uncomment when need to run in dev profile with persistent DB
+      - SPRING_PROFILES_ACTIVE=dev1
+    # Uncomment when need to run in dev2 profile with persistent DB
     # depends_on:
     #   - db
 
   # Example of a persistent service to run in dev profile
-  # db:
-  #   image: postgres:13
-  #   environment:
-  #     POSTGRES_USER: user
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: invoice_db
-  #   ports:
-  #     - "5432:5432"
+#  db:
+#    image: mysql:8.0
+#    environment:
+#      MYSQL_DATABASE: yourdatabase
+#      MYSQL_USER: yourusername
+#      MYSQL_PASSWORD: yourpassword
+#      MYSQL_ROOT_PASSWORD: rootpassword
+#    ports:
+#      - "3306:3306"
+
+#volumes:
+#  db-data:

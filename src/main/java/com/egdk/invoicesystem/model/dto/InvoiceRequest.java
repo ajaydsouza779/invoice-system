@@ -1,5 +1,6 @@
 package com.egdk.invoicesystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -25,6 +26,7 @@ public class InvoiceRequest {
     @NotNull(message = "Due date is required")
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Due date must be in the format YYYY-MM-DD")
     @Setter
+    @JsonProperty("due_date")
     private String dueDate;
 
 

@@ -87,5 +87,21 @@ A simple invoicing system that allows users to create, pay, and manage invoices,
 - Access the application at `http://localhost:8080` (or your configured host/port).
 - Use a tool like Postman or cURL to interact with the APIs.
 
+## Postman Collection
+
+A Postman collection for testing the API is available in the `postman` directory.
+
+### Importing the Collection
+
+1. Open Postman.
+2. Click on the **Import** button.
+3. Select the `postman_collection.json` file from the `postman` directory.
+4. Click **Open** to import the collection.
+
+### Using the Collection
+
+Once imported, you can use the collection to test the API endpoints and view the example requests and responses.
+
+
 ## Contact
 If you have any questions, feel free to open an issue or contact me.
