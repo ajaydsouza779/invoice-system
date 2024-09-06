@@ -7,6 +7,7 @@ import com.egdk.invoicesystem.model.dto.OverdueRequest;
 import com.egdk.invoicesystem.model.dto.PaymentRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
 import com.egdk.invoicesystem.service.InvoiceService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public Invoice createInvoice(@RequestBody InvoiceRequest request) {
-//        if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-//            throw new InvalidPaymentAmountException(request.getAmount());
-//        } TODO
+    public Invoice createInvoice(@Valid @RequestBody InvoiceRequest request) {
         return invoiceService.createInvoice(request.getAmount(), request.getDueDate());
     }
 
