@@ -91,6 +91,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>invoice-system</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

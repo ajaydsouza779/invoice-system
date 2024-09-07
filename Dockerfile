@@ -9,7 +9,5 @@ RUN mvn clean package
 FROM openjdk:17
 WORKDIR /app
 COPY --from=build /app/target/invoice-system.jar ./invoice-system.jar
-# Set the default profile to dev1, change to dev2 for mysql/other persistent DB
-ENV SPRING_PROFILES_ACTIVE=dev1
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "invoice-system.jar"]
