@@ -1,10 +1,7 @@
 package com.egdk.invoicesystem.model.entity;
 
 import com.egdk.invoicesystem.model.InvoiceStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +20,16 @@ public class Invoice {
     private BigDecimal amount;
     private BigDecimal paidAmount;
     private LocalDate dueDate;
+    @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
 
+    @PrePersist
+    public void prePersist() {
+        if (this.paidAmount == null) {
+            this.paidAmount = BigDecimal.ZERO;
+        }
+        if (this.status == null) {
+            this.status = InvoiceStatus.PENDING;
+        }
+    }
 }

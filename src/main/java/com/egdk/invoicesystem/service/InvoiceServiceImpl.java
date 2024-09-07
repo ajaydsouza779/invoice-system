@@ -35,7 +35,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = new Invoice();
         invoice.setAmount(amount);
         invoice.setDueDate(dueDate);
-        invoice.setStatus(InvoiceStatus.PENDING);
         return invoiceRepository.save(invoice);
     }
 
@@ -44,10 +43,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException(id));
 
-        if(invoice.getStatus().equals(InvoiceStatus.VOID))
+        if(InvoiceStatus.VOID.equals( invoice.getStatus()))
             throw new InvoiceVoidException();
 
-        if(invoice.getStatus().equals(InvoiceStatus.PAID))
+        if(InvoiceStatus.PAID.equals(invoice.getStatus()))
             throw new InvoiceAlreadyPaidException();
 
         invoice.setPaidAmount(invoice.getPaidAmount().add(paymentAmount));
