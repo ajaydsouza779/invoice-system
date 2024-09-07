@@ -1,10 +1,10 @@
 package com.egdk.invoicesystem.model.entity;
 
+import com.egdk.invoicesystem.model.InvoiceStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,8 +21,8 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal amount;
-    private BigDecimal paidAmount = BigDecimal.ZERO;
+    private BigDecimal paidAmount;
     private LocalDate dueDate;
-    private String status = "pending";
+    private InvoiceStatus status;
 
 }

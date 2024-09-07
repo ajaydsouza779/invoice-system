@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.egdk.invoicesystem.constants.Messages.INVALID_PAYMENT;
+import static com.egdk.invoicesystem.constants.Messages.SUCCESSFUL_PAYMENT;
+
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -50,11 +53,11 @@ public class InvoiceController {
     @PostMapping("/{id}/payments")
     public ResponseEntity<String> processPayment(@PathVariable Long id, @Valid @RequestBody PaymentRequest request) {
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            return ResponseEntity.badRequest().body("Invalid payment amount: " + request.getAmount());
+            return ResponseEntity.badRequest().body(INVALID_PAYMENT + request.getAmount());
         }
 
         invoiceService.processPayment(id, request.getAmount());
-        return ResponseEntity.ok("Payment processed successfully"); // Successful payment processing
+        return ResponseEntity.ok(SUCCESSFUL_PAYMENT); // Successful payment processing
 
     }
 

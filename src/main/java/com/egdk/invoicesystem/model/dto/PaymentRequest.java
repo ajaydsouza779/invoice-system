@@ -8,10 +8,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+import static com.egdk.invoicesystem.constants.Messages.NEGATIVE_AMOUNT;
+import static com.egdk.invoicesystem.constants.Messages.REQUIRED_AMOUNT;
+
 @Getter
 @Setter
 public class PaymentRequest {
-    @NotNull(message = "Amount cannot be null")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than zero")
+    @NotNull(message = REQUIRED_AMOUNT)
+    @DecimalMin(value = "0.0", inclusive = false, message = NEGATIVE_AMOUNT)
     private BigDecimal amount;
 }

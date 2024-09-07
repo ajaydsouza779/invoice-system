@@ -13,22 +13,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter @AllArgsConstructor
+import static com.egdk.invoicesystem.constants.Messages.*;
+
+@AllArgsConstructor
 public class InvoiceRequest {
 
 
-    @NotNull(message = "Amount is required")
-    @Positive(message = "Amount must be positive")
+    @NotNull(message = REQUIRED_AMOUNT)
+    @Positive(message = NEGATIVE_AMOUNT)
     @Getter  @Setter
     private BigDecimal amount;
 
-    @NotNull(message = "Due date is required")
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Due date must be in the format YYYY-MM-DD")
+    @NotNull(message = REQUIRED_DATE)
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = INVALID_DATE_FORMAT)
     @Setter
     @JsonProperty("due_date")
     private String dueDate;
-
 
 
     public LocalDate getDueDate() {
