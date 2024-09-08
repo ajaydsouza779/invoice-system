@@ -1,0 +1,16 @@
+# Ignore Maven target directory
+target/
+
+# Ignore Git directory
+.git/
+
+# Ignore local IDE files
+.idea/
+*.iml
+
+# Ignore log files
+*.log
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db

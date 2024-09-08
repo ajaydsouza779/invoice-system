@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.egdk.invoicesystem.model.InvoiceStatus;
 import com.egdk.invoicesystem.model.dto.InvoiceRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
 import com.egdk.invoicesystem.repository.InvoiceRepository;
@@ -36,7 +37,7 @@ public class InvoiceServiceTest {
         invoice.setId(Long.valueOf("1234"));
         invoice.setAmount(BigDecimal.valueOf(199.99));
         invoice.setDueDate(LocalDate.of(2024, 9, 11));
-        invoice.setStatus("pending");
+        invoice.setStatus(InvoiceStatus.PENDING);
 
         when(invoiceRepository.findAll()).thenReturn(List.of(invoice));
 
@@ -51,7 +52,7 @@ public class InvoiceServiceTest {
         invoice.setId(Long.valueOf("1234"));
         invoice.setAmount(BigDecimal.valueOf(199.99));
         invoice.setDueDate(LocalDate.of(2024, 9, 11));
-        invoice.setStatus("pending");
+        invoice.setStatus(InvoiceStatus.PENDING);
 
         when(invoiceRepository.save(any())).thenReturn(invoice);
 

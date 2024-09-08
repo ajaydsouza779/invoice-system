@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import com.egdk.invoicesystem.constants.Messages;
 import com.egdk.invoicesystem.exception.InvoiceNotFoundException;
+import com.egdk.invoicesystem.model.InvoiceStatus;
 import com.egdk.invoicesystem.model.dto.OverdueRequest;
 import com.egdk.invoicesystem.model.dto.PaymentRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
@@ -44,14 +46,14 @@ public class InvoiceControllerTest {
         invoice1.setAmount(BigDecimal.valueOf(100.00));
         invoice1.setPaidAmount(BigDecimal.ZERO);
         invoice1.setDueDate(LocalDate.of(2024, 12, 31));
-        invoice1.setStatus("pending");
+        invoice1.setStatus(InvoiceStatus.PENDING);
 
         Invoice invoice2 = new Invoice();
         invoice2.setId(2L);
         invoice2.setAmount(BigDecimal.valueOf(200.00));
         invoice2.setPaidAmount(BigDecimal.valueOf(50.00));
         invoice2.setDueDate(LocalDate.of(2024, 11, 30));
-        invoice2.setStatus("partially_paid");
+        invoice2.setStatus(InvoiceStatus.PAID);
 
         // Mocking the service layer to return the predefined list
         when(invoiceService.getAllInvoices()).thenReturn(Arrays.asList(invoice1, invoice2));
@@ -91,8 +93,7 @@ public class InvoiceControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        assertTrue(responseContent.contains("Amount must be positive"));
-        //                .andExpect(jsonPath("$.errors").exists());
+        assertTrue(responseContent.contains(Messages.NEGATIVE_AMOUNT));
     }
 
     @Test
@@ -104,14 +105,13 @@ public class InvoiceControllerTest {
                         .content(invoiceJson))
                 .andExpect(status().isBadRequest()).andReturn();
         String responseContent = result.getResponse().getContentAsString();
-        assertTrue(responseContent.contains("Due date is required"));    }
+        assertTrue(responseContent.contains("Invalid date format or value"));    }
 
     @Test
     void testGetInvoiceNotFoundException() throws Exception {
         Long invalidId = 999L;
 
-        // Mock the service to throw InvoiceNotFoundException
-        when(invoiceService.getInvoiceById(invalidId)).thenThrow(new InvoiceNotFoundException(invalidId));
+       when(invoiceService.getInvoiceById(invalidId)).thenThrow(new InvoiceNotFoundException(invalidId));
 
 
         MvcResult result =  mockMvc.perform(get("/invoices/{id}", invalidId))
