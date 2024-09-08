@@ -1,13 +1,17 @@
-# Using Maven image to build the application
+# Stage 1: Build the application
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package
 
-# Use the official OpenJDK image to run the application
-FROM openjdk:17
+# Stage 2: Run the application
+FROM openjdk:17-slim
 WORKDIR /app
 COPY --from=build /app/target/invoice-system.jar ./invoice-system.jar
 EXPOSE 8080
+USER nobody  # Run as a non-root user for better security
+HEALTHCHECK --interval=30s --timeout=10s \
+  CMD curl -f http://localhost:8080/actuator/health || exit 1  # Healthcheck configuration
+
 ENTRYPOINT ["java", "-jar", "invoice-system.jar"]
