@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import com.egdk.invoicesystem.constants.Messages;
 import com.egdk.invoicesystem.exception.InvoiceNotFoundException;
 import com.egdk.invoicesystem.model.InvoiceStatus;
 import com.egdk.invoicesystem.model.dto.OverdueRequest;
@@ -92,7 +93,7 @@ public class InvoiceControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        assertTrue(responseContent.contains("Amount must be positive"));
+        assertTrue(responseContent.contains(Messages.NEGATIVE_AMOUNT));
     }
 
     @Test
@@ -104,7 +105,7 @@ public class InvoiceControllerTest {
                         .content(invoiceJson))
                 .andExpect(status().isBadRequest()).andReturn();
         String responseContent = result.getResponse().getContentAsString();
-        assertTrue(responseContent.contains("Due date is required"));    }
+        assertTrue(responseContent.contains("Invalid date format or value"));    }
 
     @Test
     void testGetInvoiceNotFoundException() throws Exception {
