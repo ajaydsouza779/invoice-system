@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev2
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: invoicedb
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
