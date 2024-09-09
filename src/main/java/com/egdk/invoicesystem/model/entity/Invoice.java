@@ -2,9 +2,7 @@ package com.egdk.invoicesystem.model.entity;
 
 import com.egdk.invoicesystem.model.InvoiceStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +21,14 @@ public class Invoice {
     private LocalDate dueDate;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
+
+    public Invoice(Long id, BigDecimal amount, BigDecimal paidAmount, LocalDate dueDate, InvoiceStatus status) {
+        this.id = id;
+        this.amount = amount;
+        this.paidAmount = paidAmount;
+        this.dueDate = dueDate;
+        this.status = status;
+    }
 
     @PrePersist
     public void prePersist() {
