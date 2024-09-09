@@ -1,11 +1,16 @@
 package com.egdk.invoicesystem.controller;
 
-import com.egdk.invoicesystem.exception.InvoiceNotFoundException;
+import com.egdk.invoicesystem.exception.ErrorResponse;
+import com.egdk.invoicesystem.exception.ValidationErrorResponse;
 import com.egdk.invoicesystem.model.dto.InvoiceRequest;
 import com.egdk.invoicesystem.model.dto.OverdueRequest;
 import com.egdk.invoicesystem.model.dto.PaymentRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
 import com.egdk.invoicesystem.service.InvoiceService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +25,14 @@ import static com.egdk.invoicesystem.constants.Messages.SUCCESSFUL_PAYMENT;
 
 @RestController
 @RequestMapping("/invoices")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Invalid input",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Not found",
+                content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+})
 public class InvoiceController {
 
     @Autowired
@@ -36,6 +49,7 @@ public class InvoiceController {
 
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable Long id) {
 
@@ -44,7 +58,12 @@ public class InvoiceController {
 
     }
 
+
     @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Invoice created successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Invoice.class)))
+    })
     public ResponseEntity<Invoice> createInvoice(@Valid @RequestBody InvoiceRequest request) {
         Invoice createdInvoice = invoiceService.createInvoice(request.getAmount(), request.getDueDate());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdInvoice);

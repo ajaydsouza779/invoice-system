@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.Map;
 
+@Schema(description = "Details about validation errors")
 @Getter @Setter
 public class ValidationErrorResponse extends ErrorResponse{
     private Map<String, String> validationErrors;
