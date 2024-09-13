@@ -1,7 +1,5 @@
 package com.egdk.invoicesystem.service;
 
-import com.egdk.invoicesystem.model.dto.InvoiceRequest;
-import com.egdk.invoicesystem.model.dto.PaymentRequest;
 import com.egdk.invoicesystem.model.entity.Invoice;
 
 import java.math.BigDecimal;
