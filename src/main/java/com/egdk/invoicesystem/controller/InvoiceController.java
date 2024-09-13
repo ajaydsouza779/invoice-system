@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.egdk.invoicesystem.constants.Messages.INVALID_PAYMENT;
@@ -71,10 +70,6 @@ public class InvoiceController {
 
     @PostMapping("/{id}/payments")
     public ResponseEntity<String> processPayment(@PathVariable Long id, @Valid @RequestBody PaymentRequest request) {
-        if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            return ResponseEntity.badRequest().body(INVALID_PAYMENT + request.getAmount());
-        }
-
         invoiceService.processPayment(id, request.getAmount());
         return ResponseEntity.ok(SUCCESSFUL_PAYMENT); // Successful payment processing
 

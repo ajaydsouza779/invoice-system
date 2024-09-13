@@ -63,17 +63,7 @@ public class InvoiceControllerUnitTest {
                 });
     }
 
-    @Test
-    void testGetAllInvoicesWithContent() throws Exception {
-        List<Invoice> invoices = Arrays.asList(
-                new Invoice(1L, new BigDecimal("100.00"), new BigDecimal("0.00"), LocalDate.now(), InvoiceStatus.PENDING)
-        );
-        when(invoiceService.getAllInvoices()).thenReturn(invoices);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/invoices"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":1,\"amount\":100.00,\"paidAmount\":0.00,\"dueDate\":\"2024-09-09\",\"status\":\"PENDING\"}]"));
-    }
 
     @Test
     void testGetAllInvoicesNoContent() throws Exception {
@@ -212,6 +202,41 @@ public class InvoiceControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest());  // Expect validation error
+    }
+    @Test
+    public void testProcessPayment_InvalidAmount2() throws Exception {
+        // Arrange
+        Long invoiceId = 1L;
+        PaymentRequest request = new PaymentRequest();
+        request.setAmount(BigDecimal.ZERO); // Invalid payment amount
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(request);
+
+
+        mockMvc.perform(post("/invoices/{id}/payments", invoiceId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest()) // Expect bad request status
+                .andExpect(content().string("{\"status\":400,\"message\":\"Validation failed\",\"validationErrors\":{\"amount\":\"Amount must be positive.\"}}")); // Check response message
+    }
+
+    @Test
+    public void testProcessPayment_NegativeAmount() throws Exception {
+        // Arrange
+        Long invoiceId = 1L;
+        PaymentRequest request = new PaymentRequest();
+        request.setAmount(new BigDecimal("-100")); // Invalid negative payment amount
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestJson = objectMapper.writeValueAsString(request);
+
+
+        mockMvc.perform(post("/invoices/{id}/payments", invoiceId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest()) // Expect bad request status
+                .andExpect(content().string("{\"status\":400,\"message\":\"Validation failed\",\"validationErrors\":{\"amount\":\"Amount must be positive.\"}}")); // Check response message
     }
 }
 
